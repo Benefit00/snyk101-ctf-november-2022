@@ -1,0 +1,19 @@
+The web application revealed a page with a text input field and a response fields. If one entered text into the text field, different responses would be returned depending on what was entered. There were some clues in these error messages hinting at the solution. This included payloads that should be base64 encoded as well as consist of 4 byte chunks.
+
+Other error messages guided us toward what the challenge was focused on when googled. They contained errors from the pickle python module.
+
+we googled for pickle exploits and uncovered a exploit payload. Since the goal of the CTF was to read the flag on the system we modified the value for the payload from a reverse shell to a command execution payload that read files, namely the flag.
+
+the file named exploit.py contains the exploit for this challengeThe web application revealed a page with a text input field and a response fields. If one entered text into the text field, different responses would be returned depending on what was entered. There were some clues in these error messages hinting at the solution. This included payloads that should be base64 encoded as well as consist of 4 byte chunks.
+
+Other error messages guided us toward what the challenge was focused on when googled. They contained errors from the pickle python module.
+
+we googled for pickle exploits and uncovered a exploit payload. Since the goal of the CTF was to read the flag on the system we modified the value for the payload from a reverse shell to a command execution payload that read files, namely the flag.
+
+the file named exploit.py contains the exploit for this challenge.
+
+executing the payload returned the following content:
+
+b'base64-encoded-payload=='
+
+inserting just the base64 content into the text field on the web application would retrieve the flag. The reason why is the base64 payload would be decoded and on the server python3 pickle would deserialize the content and cat the flag content.

